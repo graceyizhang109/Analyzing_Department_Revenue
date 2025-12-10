@@ -1,0 +1,48 @@
+--- < Reading the File > ---
+
+import pandas as pd
+
+departments_structure = pd.read_csv('departments_structure.csv')
+
+print(departments_structure.head(5))
+
+--- < Data Types and Shape > ---
+
+print(departments.dtypes)
+
+print(departments.shape)
+
+--- < Data Cleaning > ---
+
+departments = departments.dropna()
+
+departments = departments.drop_duplicates()
+
+--- < Basic Filtering > ---
+
+departments_filtered= departments_structure [departments_structure ['LOCATION_ID']==1400]
+
+departments_filtered = departments_filtered.reset_index(drop=True)
+
+print (departments_filtered)
+
+--- < Merging the Data > ---
+
+departments_performance = pd.read_csv('departments_performance.csv')
+
+common_departments = departments_structure.merge(departments_performance, on="DEPARTMENT_ID", how="inner")
+
+print(common_departments)
+
+--- < Filtering Data with Multiple Conditions > ---
+
+successful_departments= common_departments[(common_departments['LOCATION_ID']==1800)|(common_departments['LOCATION_ID']==1400)]
+
+
+print(successful_departments.sort_values(['LOCATION_ID']))
+
+--- < Grouping the Data > ---
+
+revenue_by_location = common_departments.groupby('LOCATION_ID').agg({'REVENUE': ['mean', 'min', 'max']})
+
+
